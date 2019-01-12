@@ -1,5 +1,10 @@
 <template>
     <div class="tile is-ancestor is-vertical">
+        <div class="tile" v-if="error">
+            <div class="notification is-danger">
+                {{error.message}}
+            </div>
+        </div>
         <div class="tile is-parent" v-for="movie in movies">
             <article class="tile is-child is-4 box">
                 <p class="title">{{movie.title}}</p>
@@ -11,15 +16,18 @@
 </template>
 
 <script lang="ts">
-    import Vue, { PropTypes } from 'vue';
+    import Vue from 'vue';
 
     export default Vue.extend({
         computed: {
-            movies() {
-                return this.$store.state.movies
-            }
-        }
-    })
+            movies(): any[] {
+                return this.$store.state.movies;
+            },
+            error(): Error {
+                return this.$store.state.error;
+            },
+        },
+    });
 </script>
 
 <style scoped>

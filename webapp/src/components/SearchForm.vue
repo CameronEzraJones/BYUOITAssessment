@@ -12,27 +12,27 @@
 </template>
 
 <script lang="ts">
-    import Vue, { PropTypes } from 'vue';
+    import Vue from 'vue';
 
     export default Vue.extend({
         computed: {
-            loading() {
-                return this.$store.state.loading
-            }
+            loading(): boolean {
+                return this.$store.state.loading;
+            },
         },
 
         data() {
             return {
-                search: ''
-            }
+                search: '',
+            };
         },
 
         methods: {
             doSearch() {
                 this.$store.dispatch('getMovies', this.search);
-            }
-        }
-    })
+            },
+        },
+    });
 </script>
 
 <style scoped>
