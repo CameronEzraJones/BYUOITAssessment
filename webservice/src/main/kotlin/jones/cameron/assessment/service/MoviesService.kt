@@ -1,39 +1,46 @@
 package jones.cameron.assessment.service
 
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import jones.cameron.assessment.exception.SearchException
 import jones.cameron.assessment.model.Movie
 import jones.cameron.assessment.model.MovieDBResponse
+import jones.cameron.assessment.util.URLHandler
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.lang.Exception
 import java.net.URL
 import java.net.URLEncoder
 
 @Service
-class MoviesService(
-        @Value("\${API_HOST}") val apiHost: String,
-        @Value("\${API_PATH}") val apiPath: String,
-        @Value("\${API_KEY}") val apiKey: String,
-        @Value("\${IMAGE_URL_BASE}") val imageBaseUrl: String,
-        val gson: Gson
-) {
+class MoviesService {
 
-    public fun getMovies(search: String): Any {
+    @Value("\${API_HOST}")
+    lateinit var apiHost: String
+
+    @Value("\${API_PATH}")
+    lateinit var apiPath: String
+
+    @Value("\${API_KEY}")
+    lateinit var apiKey: String
+
+    @Value("\${IMAGE_URL_BASE}")
+    lateinit var imageUrlBase: String
+
+    @Autowired
+    lateinit var urlHandler: URLHandler
+
+    public fun getMovies(search: String): List<Movie> {
+        println("Get movies for search term $search")
         try {
             val url: String = constructURL(search)
-            val response: String = URL(url)
-                    .openStream()
-                    .bufferedReader()
-                    .use { it.readText() }
-            val data = gson.fromJson(response, MovieDBResponse::class.java)
+            val response = urlHandler.getDataFromURL(url)
+            val data: MovieDBResponse = Gson().fromJson(response, MovieDBResponse::class.java)
             val movieList: MutableList<Movie> = mutableListOf()
             for (i in 0..Math.min(9, data.results.size - 1)) {
                 movieList.add(Movie(
                         movie_id = data.results[i].id,
                         title = data.results[i].title,
-                        poster_image_url = imageBaseUrl + data.results[i].poster_path,
+                        poster_image_url = imageUrlBase + data.results[i].poster_path,
                         popularity_summary = "${data.results[i].popularity} out of ${data.results[i].vote_count}"
                         ))
             }
