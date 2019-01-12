@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MoviesController(val moviesService: MoviesService) {
 
+    @CrossOrigin("http://localhost:8081")
     @RequestMapping("/movies")
     fun searchMovies(@RequestParam(value = "search", defaultValue = "") search: String): Any {
         if (search.isNullOrEmpty()) {
