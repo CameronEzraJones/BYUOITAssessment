@@ -1,5 +1,6 @@
 # BYUOITAssessment
 Assessment of Vue.js front-end and Kotlin back-end skills
+![](Screencast-from-01-12-2019-07_04_02-PM.gif)
 
 ## Instructions
 Two bash scripts are provided to run the webapp and webservice. They require a Linux environment to run.
@@ -42,3 +43,7 @@ Response:
     - [x] Title
     - [x] Image of the poster
     - [x] Popularity summary
+
+## Future Work
+  - [ ] Search TV shows
+  - [ ] Indicate genre of movie
